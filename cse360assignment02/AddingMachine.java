@@ -1,4 +1,5 @@
 package cse360assignment02; // package
+import java.util.Scanner;
 
 /**
  * A class that builds a simple machine for
@@ -9,6 +10,7 @@ package cse360assignment02; // package
  */
 public class AddingMachine {
   private int total;
+  private String history;
   
   /**
    * Constructor for the AddingMachine Class,
@@ -18,6 +20,7 @@ public class AddingMachine {
    */
   public AddingMachine () {
     total = 0;  // not needed - included for clarity
+    history = "0";
   }
   
   /**
@@ -27,7 +30,7 @@ public class AddingMachine {
    * @return integer, the total
    */
   public int getTotal () {
-    return 0;
+    return total;
   }
   
   /**
@@ -36,6 +39,9 @@ public class AddingMachine {
    * @return void
    */
   public void add (int value) {
+    total += value;
+    history += " + ";
+    history += String.valueOf(value);
   }
   
   /**
@@ -44,6 +50,9 @@ public class AddingMachine {
    * @return void
    */
   public void subtract (int value) {
+    total -= value;
+    history += " - ";
+    history += String.valueOf(value);
   }
 
   /**
@@ -52,7 +61,7 @@ public class AddingMachine {
    * @return String, a string of operations
    */
   public String toString () {
-    return "";
+    return history;
   }
 
   /**
@@ -61,6 +70,93 @@ public class AddingMachine {
    * @return void
    */
   public void clear() {
+    total = 0;
+    history = "0";
+  }
+
+  /**
+   * Main function for the AddingMachine.
+   * Uses scanner to read commands and 
+   * perform operations using the AddingMachine
+   * @param args , String[], command line arguments
+   * @return none
+   */
+  public static void main(String[] args)
+  {
+    AddingMachine a = new AddingMachine();
+    Scanner console = new Scanner(System.in);
+
+    System.out.println("Welcome to CSE360 Adding Machine!");
+    boolean q = false;
+    while(!q)
+    {
+      // Print out menu
+      System.out.println();
+      System.out.println("Choose an operation: ");
+      System.out.println("1 -- Addition");
+      System.out.println("2 -- Subtraction");
+      System.out.println("3 -- Get total");
+      System.out.println("4 -- Get history");
+      System.out.println("5 -- Clear");
+      System.out.println("0 -- Quit");
+      
+      // Scan for integer
+      if(console.hasNextInt())
+      {
+          int op = console.nextInt();
+          switch(op) // Perform operations
+          {
+            case 0:
+              q = true;
+              break;
+            case 1: // addition
+              System.out.println("Integer to add: ");
+              if(console.hasNextInt()) // input check
+              {
+                a.add(console.nextInt());
+              }
+              else
+              {
+                System.out.println("Invalid");
+                console.next();
+              }
+              break;
+            case 2: // subtraction
+              System.out.println("Integer to subtract: ");
+              if(console.hasNextInt()) // input check
+              {
+                a.subtract(console.nextInt());
+              }
+              else
+              {
+                System.out.println("Invalid");
+                console.next();
+              }
+              break;
+            case 3: // get total
+              System.out.println("Total: " + a.getTotal());
+              break;
+            case 4: // get history
+              System.out.println("History: " + a.toString());
+              break;
+            case 5: // clear
+              a.clear();
+              System.out.println("Clear");
+              break;
+            default: // integer but out of range
+              System.out.println("Invalid operation");
+              break;
+          }
+        }
+      else // not an integer
+      {
+        System.out.println("Invalid operation");
+        console.next();
+      }
+
+    }
+    console.close(); // close scanner
+    
   }
 }
 
